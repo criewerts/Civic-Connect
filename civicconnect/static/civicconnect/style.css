@@ -1,0 +1,21 @@
+body {
+    background: white url("images/bg.jpg") repeat-y;
+}
+label {
+    font-weight: bold;
+}
+#container {
+    margin: auto;
+    max-width:75%;
+    background: #fff;
+    border-radius: 5px;
+}
+.block {
+    padding: 10px;
+    margin: auto;
+    display: block;
+    text-align: center;
+}
+textarea {
+    width: 50%
+}
