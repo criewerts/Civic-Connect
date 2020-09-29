@@ -1,21 +1,21 @@
 body {
-    background: white url("images/bg.jpg") repeat-y;
+    background: white;
 }
-label {
+
+.header {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.navbar .navbar-nav navbar-brand {
+    color: #999;
+}
+
+.navbar .navbar-nav a.nav-link.active {
     font-weight: bold;
 }
-#container {
-    margin: auto;
-    max-width:75%;
-    background: #fff;
-    border-radius: 5px;
-}
-.block {
-    padding: 10px;
-    margin: auto;
-    display: block;
-    text-align: center;
-}
-textarea {
-    width: 50%
+
+.navbar-expand-lg .navbar-nav .nav-link {
+    margin: 0 5px;
+    font-size: .95em;
 }
