@@ -126,13 +126,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-try:
-    # Configure Django App for Heroku.
-    import django_heroku
-    django_heroku.settings(locals())
-except ImportError:
-    found = False
-
 AUTHENTICATION_BACKENDS = {
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
@@ -154,3 +147,9 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+try:
+    # Configure Django App for Heroku.
+    import django_heroku
+    django_heroku.settings(locals())
+except ImportError:
+    found = False
