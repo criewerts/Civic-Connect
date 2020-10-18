@@ -1,0 +1,14 @@
+language: python
+python:
+- '3.8'
+install:
+- pip install -r requirements-travis.txt
+script:
+- python manage.py test
+deploy:
+  provider: heroku
+  api_key:
+    secure: H1HwUejFgJItHJ7B3SNFc14Qj/45c41co0tyPK4G5Srl99XUtACtIPkjshOokdmlV/HuADaVNUh1PothJA+fPcllKhDyeOvYTLY/l/7ngpAQgiaEDgKE6PwDMIkI63N7gMFsb80NWhC5EouyOWbDz42PoeJsBH2u5FWhJ6E1pyWdUtY8uoY9RA7FOKPMKK+2NK+5otZO/RXU/G54kv6N47/vQFUF1pN8C2mSmnBKmxMs/MYoqUXDTm7g6DrF6zNhxqDhLu29IuZN8f4HN0/kFF7mxNwL9cldhtXPHoSR4+hscEEHtmkUaZ0AgD6vNONAHdqiGLRlT0BAZoCBdIki1bi5HvgUs5jlJu4kHIHz62t1wspi3uZjhO+gpJAPPJxqT2bpYXm17HIk2DsGM/UZQiWJ17YsdwI+LmobHCMKDvuO8Eex47gUa2jh3r87qy9BfUW9Ed4kfCaCUSmYGpKtZBcGPCGKhByoMFiHYW+voMxZMCqTUWDbVfM/CPsRq5zzjfg0hmKroqSZjK/CiJD2omMDP0lpcCdL2zY3HwPgCadQJGj2rsPlm5P2L2wL6nBBeAObp6F/IiH/1fYnimtuttNcwq9oNVDZBzsC527kx2qUhan4iFYudRpoLgJ7O00wiyOqH+NoBadi88YdMAv8GJiWY33QPbgnL5ygf67tZco=
+  app: civic14
+  on:
+    repo: uva-cs3240-f20/civic14
