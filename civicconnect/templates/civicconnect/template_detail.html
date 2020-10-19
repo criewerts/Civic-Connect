@@ -1,0 +1,12 @@
+{% extends 'civicconnect/base.html' %}
+
+{% block content %}
+<h3>{{template.title}}</h3>
+<strong>Author: </strong>{{template.author.first_name}} {{template.author.last_name}}<br>
+<strong>Created: </strong> {{template.pub_date}}<br>
+<strong>Topic: </strong> <a href="">{{template.topic.title}}</a><br>
+<strong>Affiliation: </strong> {{template.get_affiliation_display}}<br>
+<br>
+<strong>Template Text:</strong><br>
+<textarea style="width:75%;height:500px" disabled>{{template.body}}</textarea>
+{% endblock %}

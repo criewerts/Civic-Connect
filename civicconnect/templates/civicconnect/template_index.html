@@ -1,0 +1,15 @@
+{% extends 'civicconnect/base.html' %}
+
+{% block content %}
+<h2>Templates</h2>
+{% if template_list %}
+    <ul>
+    {% for template in template_list %}
+        <li><a href="{% url 'civicconnect:template_detail' template.id %}">{{ template.title }}</a>, by {{template.author.first_name}} {{template.author.last_name}}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No templates have been created.</p>
+{% endif %}
+<a href="{% url 'civicconnect:template_create' %}" class="btn btn-primary">Create New Template</a>
+{% endblock %}

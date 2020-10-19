@@ -1,27 +1,23 @@
-{# Load CSS and JavaScript #}
-{# Load CSS and JavaScript #}
-
-
-{# Custom CSS #}
+<html>
 {% load static %}
+    <head>
+        <title>Civic Connect</title>
+        <link rel="icon" type="image/x-icon" href="{% static 'civicconnect/images/favicon.ico' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'civicconnect/style.css' %}">
+    </head>
+    <body>
+        <div id="container">
+            {% include 'civicconnect/header.html' %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'civicconnect/style.css' %}">
-<title>Civic Connect</title>
+            <!--Text added briefly to test successful Travis-CI-->
+            <div class="block">
+                {% block content %}{% endblock %}
+            </div>
 
-<body>
+            {% include 'civicconnect/scripts.html' %}
 
-{% include 'civicconnect/header.html' %}
-
-<!--Text added briefly to test successful Travis-CI-->
-&nbsp &nbsp &nbsp &nbsp This text was added to verify Travis-CI component!
-
-{% block content %}
-{% endblock %}
-
-{% include 'civicconnect/scripts.html' %}
-
-{% include 'civicconnect/footer.html' %}
-
-</body>
+            {% include 'civicconnect/footer.html' %}
+        </div>
+    </body>
 
 </html>

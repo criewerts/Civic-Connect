@@ -1,0 +1,24 @@
+{% extends 'civicconnect/base.html' %}
+
+{% block content %}
+<h2>Create a Template</h2>
+
+{% if user.is_authenticated %}
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+    <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Save">
+    </form>
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            document.getElementById("id_pub_date").value = moment().format('YYYY-MM-DD HH:mm:ss')
+        });
+        
+    </script>
+{% else %}
+<div class="alert alert-danger" role="alert">
+  Looks like you're not signed in! Please sign in to begin creating templates.
+</div>
+{% endif %}
+{% endblock %}
