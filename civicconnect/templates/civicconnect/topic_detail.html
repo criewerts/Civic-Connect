@@ -1,0 +1,9 @@
+{% extends 'civicconnect/base.html' %}
+
+{% block content %}
+<h3>{{topic.title}}</h3>
+<strong>Author: </strong>{{topic.author.first_name}} {{topic.author.last_name}}<br>
+<br>
+<strong>Description</strong><br>
+<p>{{topic.description}}</p>
+{% endblock %}
