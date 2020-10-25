@@ -68,6 +68,26 @@ class TopicDetailView(generic.DetailView):
     def get_queryset(self):
         return Topic.objects.filter()
 
+class TopicCreateForm(ModelForm):
+        class Meta:
+            model = Topic
+            fields = '__all__'
+
+class TopicCreateView(generic.CreateView):
+    # model = Template
+    template_name = 'civicconnect/topic_create.html'
+    
+    def get(self, request, *args, **kwargs):
+        context = {'form': TopicCreateForm()}
+        return render(request, 'civicconnect/topic_create.html', context)
+
+    def post(self, request, *args, **kwargs):
+        form = TopicCreateForm(request.POST)
+        if form.is_valid():
+            topic = form.save()
+            topic.save()
+            return HttpResponseRedirect(reverse('civicconnect:topic_detail', args=[topic.id]))
+        return render(request, 'civicconnect/topic_create.html', {'form': form})
 
 class RepresentativeView(generic.DetailView):
     template_name = 'civicconnect/my_reps_index.html'
