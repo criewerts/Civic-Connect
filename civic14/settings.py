@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'civicconnect.apps.CivicconnectConfig',
+    'users.apps.UsersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'dbbackup',
 ]
 
 MIDDLEWARE = [
@@ -153,3 +155,14 @@ try:
     django_heroku.settings(locals())
 except ImportError:
     found = False
+
+AUTH_USER_MODEL = 'users.CustomUser'
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'
+API_KEY = 'AIzaSyCNgdnir8sY1Q5Accr4hVFO31TR8i3LlpQ'
+
+
+

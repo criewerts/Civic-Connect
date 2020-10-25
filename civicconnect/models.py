@@ -2,7 +2,8 @@ import datetime
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
-# from django.contrib.auth.models import User
+from users.models import CustomUser
+
 
 class Topic(models.Model):
     title = models.CharField(max_length=200)
@@ -40,4 +41,15 @@ class Comment(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
     date = models.DateTimeField(default=datetime.datetime.now())
     def __str__(self):
-        return self.message   
+        return self.message
+
+
+class Representative(models.Model):
+    name = models.CharField(max_length=200, default='')
+    party = models.CharField(max_length=100, default='')
+    phone = models.CharField(max_length=20, default='')
+    address = models.TextField(default='')
+    user = models.ForeignKey(CustomUser, null=True,  on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return self.name

@@ -1,0 +1,38 @@
+{% extends 'civicconnect/base.html' %}
+
+{% block content %}
+
+    <h2> Elected Officials</h2>
+
+    {% if officials %}
+    <table class="container-fluid">
+        <thead>
+        <tr class="d-flex">
+          <th class ="col-1"></th>
+          <th class ="col-3">Name</th>
+          <th class ="col-3">Party</th>
+          <th class ="col-1">Contact Number</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for official in officials %}
+                <tr class="d-flex">
+                <td class ="col-1"></td>
+                <td class ="col-3">{{ official.name }} <br> <img src={{ official.photoUrl }}> </td>
+                <td class ="col-3">{{ official.party }}</td>
+                    <td class ="col-3">{{ official.phones }}</td>
+                <td class ="col-1"></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+    <h3>Could not find any elected officials at this address.</h3>
+
+    {% endif %}
+
+
+    <h3>Powered by Google Civic Information API</h3>
+
+{% endblock %}
