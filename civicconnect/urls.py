@@ -12,4 +12,5 @@ urlpatterns = [
     path('topics/create/', views.TopicCreateView.as_view(), name='topic_create'),
     path('topics/<int:pk>/', views.TopicDetailView.as_view(), name='topic_detail'),
     path('myreps/', views.RepresentativeView.as_view(), name='repindex_view'),
+    path('generate/', views.TemplateGenerateView.as_view(), name='generate')
 ]

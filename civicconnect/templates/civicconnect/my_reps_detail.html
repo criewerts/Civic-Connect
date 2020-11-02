@@ -3,36 +3,113 @@
 {% block content %}
 
     <h2> Elected Officials</h2>
-
     {% if officials %}
-    <table class="container-fluid">
-        <thead>
-        <tr class="d-flex">
-          <th class ="col-1"></th>
-          <th class ="col-3">Name</th>
-          <th class ="col-3">Party</th>
-          <th class ="col-1">Contact Number</th>
+    <strong>Your Address:</strong><br>
+    {{ original.line1 }}<br>
+    {{ original.city }}, {{ original.state }} {{ original.zip }}<br><br>
+    <table class="table table-sm">
+    <thead>
+        <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Party</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Email</th>
+        <th scope="col">Actions</th>
         </tr>
-        </thead>
-        <tbody>
-            {% for official in officials %}
-                <tr class="d-flex">
-                <td class ="col-1"></td>
-                <td class ="col-3">{{ official.name }} <br> <img src={{ official.photoUrl }}> </td>
-                <td class ="col-3">{{ official.party }}</td>
-                    <td class ="col-3">{{ official.phones }}</td>
-                <td class ="col-1"></td>
-                </tr>
-            {% endfor %}
-        </tbody>
+    </thead>
+    <tbody>
+        {% for official in officials %}
+            <tr>
+                <th scope="row"><a href="#" data-toggle="modal" data-target="#{{ official.name|cut:" "|cut:"." }}">{{ official.name }}</a></th>
+                <td>{{ official.party }}</td>
+                <td>{% with official.phones|first as phone %}{{ phone }}{% endwith %}</td>
+                <td>{% with official.emails|first as email %}{% if email %}{{ email }}{% else %}N/A{% endif %}{% endwith %}</td>
+                <td><span data-toggle="tooltip" data-placement="top" title="Write to {{ official.name }}"><a href="#" data-toggle="modal" data-target="#{{ official.name|cut:" "|cut:"." }}Generate"><i class="fas fa-envelope text-success" style="padding-top:2px"></i></a></span></td>
+
+                <!-- START TEMPLATE SELECTION/GENERATION MODAL -->
+                <div class="modal fade" id="{{ official.name|cut:" "|cut:"." }}Generate" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Write to {{ official.name }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="{% url 'civicconnect:generate' %}" method="post" class="form">
+                            {% csrf_token %}
+                            <div class="modal-body text-center">
+                                <div class="form-group">
+                                    <label>Template:</label>
+                                    <select class="form-control" name="template">
+                                    {% for template in templates %}
+                                        <option value="{{ template.id }}">[{{ template.get_affiliation_display }}] "{{ template.title }}" by {{template.author.first_name}} {{template.author.last_name}} in {{ template.topic.title }}</option>
+                                    {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Official:</label>
+                                    <input name="official" class="form-control" readonly onclick='return false;' value="{{ official.name }}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Address:</label>
+                                    {% with official.emails|first as email %}
+                                        {% if email %}
+                                            <input name="email" class="form-control" readonly onclick='return false;' value="{{ email }}">
+                                        {% else %}
+                                            <input name="email" class="form-control" required placeholder="Enter email address..">
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+                                <div class="form-group">
+                                    <label>From:</label>
+                                        <input name="me" class="form-control" required {% if user.first_name and user.last_name %}value="{{user.first_name}} {{user.last_name}}"{% endif %}>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <input class="btn btn-primary" type="submit" value="Generate Email">
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- END TEMPLATE SELECTION/GENERATION MODAL -->
+                
+                <!-- START PHOTO POPUP MODAL -->
+                <div class="modal fade" id="{{ official.name|cut:" "|cut:"." }}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">{{ official.name }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center">
+                            {% if official.photoUrl %}
+                                <img src="{{official.photoUrl}}">
+                            {% else %}
+                                <em>No photo found for {{official.name}}.</em>
+                            {% endif %}
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END PHOTO POPUP MODAL -->
+            </tr>
+        {% endfor %}
+    </tbody>
     </table>
 
     {% else %}
     <div class="alert alert-danger" role="alert">Could not find any elected officials at this address.</div>
     {% endif %}
 
-    <a href="{% url 'civicconnect:repindex_view' %}">Search again</a><br><br>
-
-    <div class="alert alert-secondary" role="alert"><em>Powered by the Google Civic Information API.</em></div>
-
+    <div class="alert alert-secondary" role="alert">Click <a href="{% url 'civicconnect:repindex_view' %}">here</a> to search again. <em>Powered by the Google Civic Information API.</em></div>
+    <script type="text/javascript">
+        window.addEventListener('DOMContentLoaded', (event) => {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+    </script>
 {% endblock %}

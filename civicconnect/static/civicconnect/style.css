@@ -22,3 +22,8 @@ textarea {
 .table {
     text-align: center;
 }
+.generated-email {
+    background: #cccccc;
+    padding: 18px;
+    border-radius: 10px;
+}

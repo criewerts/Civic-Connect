@@ -5,7 +5,6 @@ from django.urls import reverse
 from django.views import generic
 from django.forms import ModelForm
 import requests, json
-
 from civic14.settings import API_KEY
 from .models import Topic, Template, Representative
 from civicconnect.forms import RepresentativeForm
@@ -54,6 +53,22 @@ class TemplateCreateView(generic.CreateView):
             template.save()
             return HttpResponseRedirect(reverse('civicconnect:template_detail', args=[template.id]))
         return render(request, 'civicconnect/template_create.html', {'form': form})
+
+class TemplateGenerateView(generic.DetailView):
+    template_name = 'civicconnect/template_generate.html'
+
+    def post(self, request, *args, **kwargs):
+        # template = get_object_or_404(Template, pk=request.POST['template'])
+        raw_template = Template.objects.get(pk=request.POST['template']).body
+        raw_template = raw_template.replace("${official}", request.POST['official'])
+        raw_template = raw_template.replace("${me}", request.POST['me'])
+        raw_template = raw_template.replace("\n", "<br>")
+        payload = {
+            'template': Template.objects.get(pk=request.POST['template']),
+            'official': {'name': request.POST['official'], 'email': request.POST['email']},
+            'generated_template': raw_template
+        }
+        return render(request, self.template_name, payload)
 
 class TopicIndexView(generic.ListView):
     template_name = 'civicconnect/topic_index.html'
@@ -109,7 +124,7 @@ class RepresentativeView(generic.DetailView):
                             match = True
                     if not match:
                         rep.save()
-                args = {'officials': data['officials']}
+                args = {'officials': data['officials'], 'original': data['normalizedInput'], 'offices': data['offices'], 'templates': Template.objects.filter()}
             else:
                 args = {'nothing': 0}
 

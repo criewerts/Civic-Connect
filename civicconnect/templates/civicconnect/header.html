@@ -18,7 +18,7 @@
         <a class="nav-link" href="/topics">Topics</a>
       </li>
     <li class="nav-item {% if "myreps" in request.path %}active{% endif %}">
-        <a class="nav-link" href="/myreps/">My Reps</a>
+        <a class="nav-link" href="/myreps/">Representatives</a>
     </li>
       <li class="nav-item {% if request.path == "/accounts/logout/" %}active{% endif %}">
         {% if user.is_authenticated %}
