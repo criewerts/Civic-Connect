@@ -17,11 +17,14 @@
       <li class="nav-item {% if "topics" in request.path %}active{% endif %}">
         <a class="nav-link" href="/topics">Topics</a>
       </li>
+    <li class="nav-item {% if "myreps" in request.path %}active{% endif %}">
+        <a class="nav-link" href="/myreps/">Representatives</a>
+    </li>
       <li class="nav-item {% if request.path == "/accounts/logout/" %}active{% endif %}">
         {% if user.is_authenticated %}
-            <a class="nav-link" href="/accounts/logout/">Sign Out</a>
+            <a class="nav-link" href="/accounts/logout/">Log Out</a>
         {% else %}
-            <a class="nav-link" href="{% provider_login_url 'google' %}">Sign In</a>
+            <a class="nav-link" href="{% provider_login_url 'google' %}">Log In</a>
         {% endif %}
       </li>
   </div>

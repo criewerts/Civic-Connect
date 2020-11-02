@@ -1,0 +1,19 @@
+{% extends 'civicconnect/base.html' %}
+
+
+
+{% block content %}
+
+    <div class="text-center">
+        <h3>Representatives Search</h3>
+        <p>Learn about your representatives and get in touch with them regarding the issues you care about.</p>
+    </div>
+
+    <div class="container">
+        <form method="get">
+            {{ form.as_p }}
+            <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+    </div>
+
+{% endblock %}
