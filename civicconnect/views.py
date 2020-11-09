@@ -4,11 +4,12 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 from django.forms import ModelForm
+from users.models import CustomUser
 import requests, json
 from civic14.settings import API_KEY
-from .models import Topic, Template, Representative
+from civicconnect.models import Topic, Template, Representative
 from civicconnect.forms import RepresentativeForm
-
+from django.contrib import messages
 
 class IndexView(generic.ListView):
     template_name = 'civicconnect/index.html'
@@ -68,6 +69,7 @@ class TemplateGenerateView(generic.DetailView):
             'official': {'name': request.POST['official'], 'email': request.POST['email']},
             'generated_template': raw_template
         }
+        messages.success(request, "<strong>Success!</strong> Please find your generated email below.")
         return render(request, self.template_name, payload)
 
 class TopicIndexView(generic.ListView):
@@ -132,3 +134,35 @@ class RepresentativeView(generic.DetailView):
 
         form = RepresentativeForm()
         return render(request, self.template_name, {'form': form})
+
+def get_user_profile(request, email):
+    user = CustomUser.objects.get(email=email)
+    return render(request, 'civicconnect/profile.html', {"user":user})
+
+def like(request, pk):
+    user = CustomUser.objects.get(email=request.user.email)
+    if "topics" in request.path:
+        fav = Topic.objects.get(pk=pk)
+        user.favorites_topic.add(fav)
+        messages.success(request, 'Added to your liked topics.')
+        return HttpResponseRedirect(reverse('civicconnect:topic_detail', args=[pk]))
+    else: # templates
+        fav = Template.objects.get(pk=pk)
+        user = CustomUser.objects.get(email=request.user.email)
+        user.favorites.add(fav)
+        messages.success(request, 'Added to your liked templates.')
+        return HttpResponseRedirect(reverse('civicconnect:template_detail', args=[pk]))
+
+def unlike(request, pk):
+    user = CustomUser.objects.get(email=request.user.email)
+    if "topics" in request.path:
+        fav = Topic.objects.get(pk=pk)
+        user.favorites_topic.remove(fav)
+        messages.success(request, 'Removed from your liked topics.')
+        return HttpResponseRedirect(reverse('civicconnect:topic_detail', args=[pk]))
+    else: # templates
+        fav = Template.objects.get(pk=pk)
+        user = CustomUser.objects.get(email=request.user.email)
+        user.favorites.remove(fav)
+        messages.success(request, 'Removed from your liked templates.')
+        return HttpResponseRedirect(reverse('civicconnect:template_detail', args=[pk]))

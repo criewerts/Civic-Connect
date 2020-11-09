@@ -1,3 +1,4 @@
+from django.conf.urls import include, url
 from django.urls import path
 
 from . import views
@@ -12,5 +13,10 @@ urlpatterns = [
     path('topics/create/', views.TopicCreateView.as_view(), name='topic_create'),
     path('topics/<int:pk>/', views.TopicDetailView.as_view(), name='topic_detail'),
     path('myreps/', views.RepresentativeView.as_view(), name='repindex_view'),
-    path('generate/', views.TemplateGenerateView.as_view(), name='generate')
+    path('generate/', views.TemplateGenerateView.as_view(), name='generate'),
+    url(r'profile/(?P<email>.+)$', views.get_user_profile),
+    url(r'templates/(?P<pk>[0-9]+)/like', views.like, name='like'),
+    url(r'templates/(?P<pk>[0-9]+)/unlike', views.unlike, name='unlike'),
+    url(r'topics/(?P<pk>[0-9]+)/like', views.like, name='like_topic'),
+    url(r'topics/(?P<pk>[0-9]+)/unlike', views.unlike, name='unlike_topic')
 ]

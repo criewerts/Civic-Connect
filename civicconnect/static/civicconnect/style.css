@@ -27,3 +27,38 @@ textarea {
     padding: 18px;
     border-radius: 10px;
 }
+.profile_image {
+    max-width: 200px;
+    border-radius: 50%;
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    filter: grayscale(100%);
+    transition: all 0.5s linear;
+    opacity: 0.8;
+    margin: auto;
+    display: block;
+}
+.profile_image:hover {
+    -webkit-filter: grayscale(0%);
+    -moz-filter: grayscale(0%);
+    filter: grayscale(0%);
+    opacity: 1;
+}
+.favorite {
+    color: gold;
+}
+.favorites-template {
+    position: relative;
+    float: right;
+    padding-right: 10px;
+    padding-top: 10px;
+}
+.unliked, .remove:hover {
+    color: #bfbfbf;
+}
+.unliked:hover {
+    color: gold;
+}
+.alert-fix {
+    top: -3px!important;
+}

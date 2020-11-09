@@ -43,7 +43,7 @@
                                     <label>Template:</label>
                                     <select class="form-control" name="template">
                                     {% for template in templates %}
-                                        <option value="{{ template.id }}">[{{ template.get_affiliation_display }}] "{{ template.title }}" by {{template.author.first_name}} {{template.author.last_name}} in {{ template.topic.title }}</option>
+                                        <option value="{{ template.id }}">{% if template in user.favorites.all %}[★]{% endif %}[{{ template.get_affiliation_display }}] "{{ template.title }}" by {{template.author.first_name}} {{template.author.last_name}} in {{ template.topic.title }}</option>
                                     {% endfor %}
                                     </select>
                                 </div>
@@ -107,9 +107,4 @@
     {% endif %}
 
     <div class="alert alert-secondary" role="alert">Click <a href="{% url 'civicconnect:repindex_view' %}">here</a> to search again. <em>Powered by the Google Civic Information API.</em></div>
-    <script type="text/javascript">
-        window.addEventListener('DOMContentLoaded', (event) => {
-            $('[data-toggle="tooltip"]').tooltip()
-        });
-    </script>
 {% endblock %}

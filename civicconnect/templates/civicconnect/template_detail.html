@@ -1,6 +1,13 @@
 {% extends 'civicconnect/base.html' %}
 
 {% block content %}
+{% if user.is_authenticated %}
+    {% if template in user.favorites.all %}
+        <span data-toggle="tooltip" data-placement="top" title="Remove from Liked" class="favorites-template"><a href="{% url 'civicconnect:unlike' template.id %}"><i class="fas fa-star favorite remove"></i></a></span>
+    {% else %}
+        <span data-toggle="tooltip" data-placement="top" title="Add to Liked" class="favorites-template"><a href="{% url 'civicconnect:like' template.id %}"><i class="fas fa-star unliked"></i></a></span>
+    {% endif %}
+{% endif %}
 <h3>{{template.title}}</h3>
 <strong>Author: </strong>{{template.author.first_name}} {{template.author.last_name}}<br>
 <strong>Created: </strong> {{template.pub_date}}<br>
