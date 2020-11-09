@@ -32,8 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'civicconnect.apps.CivicconnectConfig',
     'users.apps.UsersConfig',
+    'civicconnect.apps.CivicconnectConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -163,5 +163,4 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'
 API_KEY = 'AIzaSyCNgdnir8sY1Q5Accr4hVFO31TR8i3LlpQ'
 
-
-
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'

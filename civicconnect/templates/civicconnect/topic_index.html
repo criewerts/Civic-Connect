@@ -3,9 +3,14 @@
 {% block content %}
 <h2>Topics</h2>
 {% if topic_list %}
+Where to <em>you</em> want to see change? Add issues you hope to address here.<br><br>
     <ul>
     {% for topic in topic_list %}
-        <li><a href="{% url 'civicconnect:topic_detail' topic.id %}">{{ topic.title }}</a>, by {{topic.author.first_name}} {{topic.author.last_name}}</li>
+        <li><a href="{% url 'civicconnect:topic_detail' topic.id %}">{{ topic.title }}</a>, by {{topic.author.first_name}} {{topic.author.last_name}}
+        {% if topic in user.favorites_topic.all %}
+            <span data-toggle="tooltip" data-placement="top" title="Liked"><i class="fas fa-star favorite"></i></span>
+        {% endif %}
+        </li>
     {% endfor %}
     </ul>
 {% else %}

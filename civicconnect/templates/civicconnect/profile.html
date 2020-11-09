@@ -1,0 +1,31 @@
+{% extends 'civicconnect/base.html' %}
+
+{% block content %}
+<h2>Profile</h2>
+
+<div class="text-center">
+    <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="profile_image"><br>
+    <strong>{{ user.first_name }} {{ user.last_name }}</strong> <br>
+    <em>{{ user.email }}</em><br>
+    <hr>
+    <h2>Liked Templates</h2>
+    {% if user.favorites.all %}
+        {% for favorite in user.favorites.all %}
+            <a href="{% url 'civicconnect:template_detail' favorite.id %}">{{ favorite.title }}</a> by {{favorite.author.first_name}} {{favorite.author.last_name}} in {{favorite.topic.title }}<br>
+        {% endfor %}
+    {% else %}
+        <em>You do not have any liked templates.</em>
+    {% endif %}
+    <hr>
+    <h2>Liked Topics</h2>
+    {% if user.favorites_topic.all %}
+        {% for favorite in user.favorites_topic.all %}
+            <a href="{% url 'civicconnect:topic_detail' favorite.id %}">{{ favorite.title }}</a> by {{favorite.author.first_name}} {{favorite.author.last_name}}<br>
+        {% endfor %}
+    {% else %}
+        <em>You do not have any liked topics.</em>
+    {% endif %}
+</div>
+<h3 >
+
+{% endblock %}

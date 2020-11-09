@@ -2,10 +2,16 @@
 
 {% block content %}
 <h2>Templates</h2>
+View templates by other citizens or create your own.<br><br>
 {% if template_list %}
     <ul>
     {% for template in template_list %}
-        <li><a href="{% url 'civicconnect:template_detail' template.id %}">{{ template.title }}</a>, by {{template.author.first_name}} {{template.author.last_name}}</li>
+        <li>
+        <a href="{% url 'civicconnect:template_detail' template.id %}">{{ template.title }}</a>, by {{template.author.first_name}} {{template.author.last_name}} 
+        {% if template in user.favorites.all %}
+            <span data-toggle="tooltip" data-placement="top" title="Liked"><i class="fas fa-star favorite"></i></span>
+        {% endif %}
+        </li>
     {% endfor %}
     </ul>
 {% else %}

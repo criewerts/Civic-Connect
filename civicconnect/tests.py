@@ -40,7 +40,7 @@ class CivicInfoApiTests(TestCase):
         url = c + address + o + API_KEY
         response = requests.get(url)
         data = response.json()
-        self.assertEqual('Tim Kaine', data['officials'][0]['name'])
+        self.assertEqual('Mark R. Warner', data['officials'][0]['name'])
 
     def test_civic_info_api_address(self, c=civic, o=offices):
         address = "85 Engineer's Way, Charlottesville, VA 22903"

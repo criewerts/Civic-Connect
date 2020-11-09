@@ -2,7 +2,7 @@ import datetime
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
-from users.models import CustomUser
+# from users.models import CustomUser
 
 
 class Topic(models.Model):
@@ -49,7 +49,7 @@ class Representative(models.Model):
     party = models.CharField(max_length=100, default='')
     phone = models.CharField(max_length=20, default='')
     address = models.TextField(default='')
-    user = models.ForeignKey(CustomUser, null=True,  on_delete=models.SET_NULL)
+    # user = models.ForeignKey(CustomUser, null=True,  on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.name
