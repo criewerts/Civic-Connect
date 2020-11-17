@@ -9,10 +9,13 @@
         <p>Learn about your representatives and get in touch with them regarding the issues you care about.</p>
     </div>
 
-    <div class="container">
-        <form method="get">
-            {{ form.as_p }}
-            <button class="btn btn-primary" type="submit">Search</button>
+    <div class="container text-center">
+        <form method="get" class="form">
+            <div class="form-group">
+                <label for="inputAddress">Address</label>
+                <input class="form-control" name="address" id="inputAddress" placeholder="Enter address here..." value="{{user.address1}}, {{user.city}}, {{user.state_cd}} {{user.zip_code}}">
+            </div>
+            <input class="btn btn-primary" type="submit" value="Find">
         </form>
     </div>
 

@@ -139,6 +139,16 @@ def get_user_profile(request, email):
     user = CustomUser.objects.get(email=email)
     return render(request, 'civicconnect/profile.html', {"user":user})
 
+def update_user_profile(request, email):
+    user = CustomUser.objects.get(email=request.user.email)
+    user.address1 = request.POST['address1']
+    user.zip_code = request.POST['zip_code']
+    user.city = request.POST['city']
+    user.state_cd = request.POST['state_cd']
+    user.save()
+    messages.success(request, 'Successfully updated your profile information.')
+    return render(request, 'civicconnect/profile.html', {"user":user})
+
 def like(request, pk):
     user = CustomUser.objects.get(email=request.user.email)
     if "topics" in request.path:

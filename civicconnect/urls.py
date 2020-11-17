@@ -14,6 +14,7 @@ urlpatterns = [
     path('topics/<int:pk>/', views.TopicDetailView.as_view(), name='topic_detail'),
     path('myreps/', views.RepresentativeView.as_view(), name='repindex_view'),
     path('generate/', views.TemplateGenerateView.as_view(), name='generate'),
+    url(r'profile/(?P<email>.+)/update$', views.update_user_profile, name="update_profile"),
     url(r'profile/(?P<email>.+)$', views.get_user_profile),
     url(r'templates/(?P<pk>[0-9]+)/like', views.like, name='like'),
     url(r'templates/(?P<pk>[0-9]+)/unlike', views.unlike, name='unlike'),
