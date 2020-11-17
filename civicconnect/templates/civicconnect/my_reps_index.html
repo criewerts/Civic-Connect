@@ -13,7 +13,7 @@
         <form method="get" class="form">
             <div class="form-group">
                 <label for="inputAddress">Address</label>
-                <input class="form-control" name="address" id="inputAddress" placeholder="Enter address here..." value="{{user.address1}}, {{user.city}}, {{user.state_cd}} {{user.zip_code}}">
+                <input class="form-control" name="address" id="inputAddress" placeholder="Enter address here..." value="{{user.address1}}{% if user.address1 %}, {% endif %}{{user.city}}{% if user.address1 %}, {% endif %}{{user.state_cd}} {{user.zip_code}}">
             </div>
             <input class="btn btn-primary" type="submit" value="Find">
         </form>

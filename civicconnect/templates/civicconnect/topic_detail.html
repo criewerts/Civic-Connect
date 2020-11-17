@@ -9,7 +9,7 @@
     {% endif %}
 {% endif %}
 <h3>{{topic.title}}</h3>
-<strong>Author: </strong>{{topic.author.first_name}} {{topic.author.last_name}}<br>
+<strong>Author: </strong><a href="{% url 'civicconnect:profile' topic.author.email %}">{{topic.author.first_name}} {{topic.author.last_name}}</a> ({{ topic.author.email }})<br>
 <br>
 <strong>Description</strong><br>
 <p>{{topic.description}}</p>

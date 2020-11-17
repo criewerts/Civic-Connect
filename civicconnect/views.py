@@ -6,6 +6,7 @@ from django.views import generic
 from django.forms import ModelForm
 from users.models import CustomUser
 import requests, json
+from datetime import datetime
 from civic14.settings import API_KEY
 from civicconnect.models import Topic, Template, Representative
 from civicconnect.forms import RepresentativeForm
@@ -26,7 +27,7 @@ class TemplateIndexView(generic.ListView):
     def get_queryset(self):
         return Template.objects.filter(
             pub_date__lte=timezone.now()
-        ).order_by('-pub_date')[:5]
+        ).order_by('-pub_date')
 
 class TemplateDetailView(generic.DetailView):
     model = Template
@@ -44,16 +45,40 @@ class TemplateCreateView(generic.CreateView):
     template_name = 'civicconnect/template_create.html'
     
     def get(self, request, *args, **kwargs):
-        context = {'form': TemplateCreateForm()}
+        context = {'topics': Topic.objects.filter(), 'affiliations': Template._meta.get_field('affiliation').choices}
         return render(request, 'civicconnect/template_create.html', context)
 
     def post(self, request, *args, **kwargs):
-        form = TemplateCreateForm(request.POST)
-        if form.is_valid():
-            template = form.save()
-            template.save()
-            return HttpResponseRedirect(reverse('civicconnect:template_detail', args=[template.id]))
-        return render(request, 'civicconnect/template_create.html', {'form': form})
+        template = Template.objects.create(
+            title=request.POST['title'],
+            author=CustomUser.objects.get(email=request.user.email),
+            topic=Topic.objects.get(pk=request.POST['topic']),
+            body=request.POST['body'],
+            affiliation=request.POST['affiliation'],
+            pub_date=datetime.now()
+        )
+        messages.success(request, "<strong>Success!</strong> Your template has been created.")
+        return HttpResponseRedirect(reverse('civicconnect:template_detail', args=[template.id]))
+        # return render(request, 'civicconnect/template_create.html', {'form': form})
+
+class TemplateUpdateView(generic.DetailView):
+    model = Template
+    template_name = 'civicconnect/template_create.html'
+    
+    def get(self, request, *args, **kwargs):
+        context = {'topics': Topic.objects.filter(), 'affiliations': Template._meta.get_field('affiliation').choices, "template": Template.objects.get(pk=self.kwargs['pk'])}
+        return render(request, 'civicconnect/template_create.html', context)
+
+    def post(self, request, *args, **kwargs):
+        template = Template.objects.get(pk=self.kwargs['pk'])
+        template.title=request.POST['title']
+        template.topic=Topic.objects.get(pk=request.POST['topic'])
+        template.body=request.POST['body']
+        template.affiliation=request.POST['affiliation']
+        template.save()
+        messages.success(request, "Successfully edited <strong>" + request.POST['title'] + "</strong>.")
+        return HttpResponseRedirect(reverse('civicconnect:template_detail', args=[template.id]))
+        # return render(request, 'civicconnect/template_create.html', {'form': form})
 
 class TemplateGenerateView(generic.DetailView):
     template_name = 'civicconnect/template_generate.html'
@@ -103,6 +128,7 @@ class TopicCreateView(generic.CreateView):
         if form.is_valid():
             topic = form.save()
             topic.save()
+            messages.success(request, "<strong>Success!</strong> Your topic has been created.")
             return HttpResponseRedirect(reverse('civicconnect:topic_detail', args=[topic.id]))
         return render(request, 'civicconnect/topic_create.html', {'form': form})
 
@@ -137,7 +163,7 @@ class RepresentativeView(generic.DetailView):
 
 def get_user_profile(request, email):
     user = CustomUser.objects.get(email=email)
-    return render(request, 'civicconnect/profile.html', {"user":user})
+    return render(request, 'civicconnect/profile.html', {"profile_user":user})
 
 def update_user_profile(request, email):
     user = CustomUser.objects.get(email=request.user.email)
@@ -147,7 +173,7 @@ def update_user_profile(request, email):
     user.state_cd = request.POST['state_cd']
     user.save()
     messages.success(request, 'Successfully updated your profile information.')
-    return render(request, 'civicconnect/profile.html', {"user":user})
+    return render(request, 'civicconnect/profile.html', {"profile_user":user})
 
 def like(request, pk):
     user = CustomUser.objects.get(email=request.user.email)
