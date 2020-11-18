@@ -15,7 +15,7 @@ View templates by other citizens or create your own.<br><br>
     {% endfor %}
     </ul>
 {% else %}
-    <p>No templates have been created.</p>
+    <p>No templates have been created and approved yet.</p>
 {% endif %}
 <a href="{% url 'civicconnect:template_create' %}" class="btn btn-primary">Create New Template</a>
 {% endblock %}

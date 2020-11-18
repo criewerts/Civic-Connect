@@ -11,6 +11,7 @@ Deployed to Heroku @ [civic14.herokuapp.com](https://civic14.herokuapp.com/).
     - The user must select an affiliation of the Template to create.
     - On the **Email Body** field, a real-time verification that the required replacement tags is shown for the user. The red badges turn green when the replacement tag is included in the email body. The user is unable to submit the template without adding these tags.
     - The above applies to the Template edit screen (`/templates/<id>/edit`).
+    - Templates must be approved by an Administrator before displaying on the Topic Index (`/templates`).
 - Editing Templates & Topics
     - On the Template/Topic detail screen, a pencil icon is shown to the user in the top right if they are the author of the Template/Topic. Clicking on the icon, the user is able to edit the Template/Topic and see the existing information pre-filled in.
 - User Liked Templates & Topics

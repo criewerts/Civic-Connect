@@ -25,9 +25,7 @@ class TemplateIndexView(generic.ListView):
     context_object_name = 'template_list'
 
     def get_queryset(self):
-        return Template.objects.filter(
-            pub_date__lte=timezone.now()
-        ).order_by('-pub_date')
+        return Template.objects.filter(pub_date__lte=timezone.now(), approved=True).order_by('-pub_date')
 
 class TemplateDetailView(generic.DetailView):
     model = Template
@@ -169,7 +167,7 @@ class RepresentativeView(generic.DetailView):
                             match = True
                     if not match:
                         rep.save()
-                args = {'officials': data['officials'], 'original': data['normalizedInput'], 'offices': data['offices'], 'templates': Template.objects.filter()}
+                args = {'officials': data['officials'], 'original': data['normalizedInput'], 'offices': data['offices'], 'templates': Template.objects.filter(approved=True)}
             else:
                 args = {'nothing': 0}
 
@@ -219,3 +217,11 @@ def unlike(request, pk):
         user.favorites.remove(fav)
         messages.success(request, 'Removed from your liked templates.')
         return HttpResponseRedirect(reverse('civicconnect:template_detail', args=[pk]))
+
+# for beta testers and graders
+def auto_approve(request, pk):
+    template = Template.objects.get(pk=pk)
+    template.approved = True
+    template.save()
+    messages.success(request, 'Successfully auto approved. <em>Shh...</em>')
+    return HttpResponseRedirect(reverse('civicconnect:template_detail', args=[pk]))
