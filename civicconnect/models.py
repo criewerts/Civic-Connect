@@ -25,6 +25,7 @@ class Template(models.Model):
     affiliation = models.IntegerField(choices=AFFILIATIONS, default=1)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
     pub_date = models.DateTimeField('date published')
+    approved = models.BooleanField(default=False)
     def __str__(self):
         return self.title
     def was_published_recently(self):
@@ -34,22 +35,11 @@ class Template(models.Model):
     was_published_recently.boolean = True
     was_published_recently.short_description = 'Published recently?'
 
-
-class Comment(models.Model):
-    template = models.ForeignKey(Template, on_delete=models.CASCADE)
-    message = models.TextField(default="")
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
-    date = models.DateTimeField(default=datetime.datetime.now())
-    def __str__(self):
-        return self.message
-
-
 class Representative(models.Model):
     name = models.CharField(max_length=200, default='')
     party = models.CharField(max_length=100, default='')
     phone = models.CharField(max_length=20, default='')
     address = models.TextField(default='')
-    # user = models.ForeignKey(CustomUser, null=True,  on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.name

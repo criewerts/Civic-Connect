@@ -1,7 +1,7 @@
 {% extends 'civicconnect/base.html' %}
 
 {% block content %}
-{% if template.title %}<h2>Edit "{{ topic.title }}"</h2>{% else %}<h2>Create New Topic</h2>{% endif %}
+{% if topic.title %}<h2>Edit "{{ topic.title }}"</h2>{% else %}<h2>Create New Topic</h2>{% endif %}
 
 {% if user.is_authenticated %}
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
