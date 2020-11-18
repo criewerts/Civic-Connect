@@ -12,7 +12,7 @@
     </div>
 </p>
 <div class="text-center">
-    <a href="mailto:{{official.email}}" class="btn btn-primary">Send Email</a>
+    <a data-toggle="tooltip" data-placement="top" title="This will paste the full email (both subject and body) into your email client as a draft." href="mailto:{{official.email}}?subject={{ template.title }}&body={{ mailto_body }}" target="_blank" class="btn btn-primary">Send Email</a>
     <a href="javascript:history.back()" class="btn btn-secondary">Back to Search</a>
     <a href="{% url 'civicconnect:template_create' %}" class="btn btn-secondary">Create Template</a>
 </div>

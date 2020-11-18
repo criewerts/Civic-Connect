@@ -88,11 +88,13 @@ class TemplateGenerateView(generic.DetailView):
         raw_template = Template.objects.get(pk=request.POST['template']).body
         raw_template = raw_template.replace("${official}", request.POST['official'])
         raw_template = raw_template.replace("${me}", request.POST['me'])
+        mailto_body = raw_template.replace("\n", "%0D%0A")
         raw_template = raw_template.replace("\n", "<br>")
         payload = {
             'template': Template.objects.get(pk=request.POST['template']),
             'official': {'name': request.POST['official'], 'email': request.POST['email']},
-            'generated_template': raw_template
+            'generated_template': raw_template,
+            'mailto_body': mailto_body
         }
         messages.success(request, "<strong>Success!</strong> Please find your generated email below.")
         return render(request, self.template_name, payload)
@@ -116,21 +118,36 @@ class TopicCreateForm(ModelForm):
             fields = '__all__'
 
 class TopicCreateView(generic.CreateView):
-    # model = Template
     template_name = 'civicconnect/topic_create.html'
     
     def get(self, request, *args, **kwargs):
-        context = {'form': TopicCreateForm()}
+        context = {}
         return render(request, 'civicconnect/topic_create.html', context)
 
     def post(self, request, *args, **kwargs):
-        form = TopicCreateForm(request.POST)
-        if form.is_valid():
-            topic = form.save()
-            topic.save()
-            messages.success(request, "<strong>Success!</strong> Your topic has been created.")
-            return HttpResponseRedirect(reverse('civicconnect:topic_detail', args=[topic.id]))
-        return render(request, 'civicconnect/topic_create.html', {'form': form})
+        topic = Topic.objects.create(
+            title=request.POST['title'],
+            author=CustomUser.objects.get(email=request.user.email),
+            description=request.POST['description'],
+        )
+        messages.success(request, "<strong>Success!</strong> Your topic has been created.")
+        return HttpResponseRedirect(reverse('civicconnect:topic_detail', args=[topic.id]))
+
+class TopicUpdateView(generic.DetailView):
+    model = Topic
+    template_name = 'civicconnect/topic_create.html'
+    
+    def get(self, request, *args, **kwargs):
+        context = {"topic": Topic.objects.get(pk=self.kwargs['pk'])}
+        return render(request, 'civicconnect/topic_create.html', context)
+
+    def post(self, request, *args, **kwargs):
+        topic = Topic.objects.get(pk=self.kwargs['pk'])
+        topic.title=request.POST['title']
+        topic.description=request.POST['description']
+        topic.save()
+        messages.success(request, "Successfully edited <strong>" + request.POST['title'] + "</strong>.")
+        return HttpResponseRedirect(reverse('civicconnect:topic_detail', args=[topic.id]))
 
 class RepresentativeView(generic.DetailView):
     template_name = 'civicconnect/my_reps_index.html'

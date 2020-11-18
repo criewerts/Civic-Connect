@@ -7,6 +7,9 @@
     {% else %}
         <span data-toggle="tooltip" data-placement="top" title="Add to Liked" class="favorites-template"><a href="{% url 'civicconnect:like_topic' topic.id %}"><i class="fas fa-star unliked"></i></a></span>
     {% endif %}
+    {% if topic.author.email == user.email %}
+        <span data-toggle="tooltip" data-placement="top" title="Edit" class="favorites-template"><a href="{% url 'civicconnect:topic_update' topic.id %}"><i class="fas fa-pencil-alt edit"></i></a></span>
+    {% endif %}
 {% endif %}
 <h3>{{topic.title}}</h3>
 <strong>Author: </strong><a href="{% url 'civicconnect:profile' topic.author.email %}">{{topic.author.first_name}} {{topic.author.last_name}}</a> ({{ topic.author.email }})<br>

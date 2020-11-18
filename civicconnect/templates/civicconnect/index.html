@@ -1,5 +1,16 @@
 {% extends 'civicconnect/base.html' %}
-
+{% load socialaccount %}
 {% block content %}
-Welcome to Civic Connect! Head over to the Templates tab to get started.
+Welcome to Civic Connect! We are making it easier to put your passions into action. Here, you can collaborate with other citizens by creating email templates and issues (topics) in order to get in touch with your local representatives on the issues <em>you</em> care about.
+<hr>
+<h4>Getting Started</h4>
+<ol>
+    {% if user.is_authenticated %}
+        <li>Thanks for signing in, {{ user.first_name }}!</li>
+    {% else %}
+        <li>It looks like you're not logged in. <a href="{% provider_login_url 'google' %}">Log In</a> to gain access to all of Civic Connect's features.</li>
+    {% endif %}
+    <li>Head over to your profile and enter your contact information. This will be useful for looking up your representatives.</li>
+    <li>Visit the Representatives tab to get in touch with your local officials.</li>
+</ol>
 {% endblock %}

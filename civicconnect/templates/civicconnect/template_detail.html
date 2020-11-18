@@ -8,7 +8,7 @@
         <span data-toggle="tooltip" data-placement="top" title="Add to Liked" class="favorites-template"><a href="{% url 'civicconnect:like' template.id %}"><i class="fas fa-star unliked"></i></a></span>
     {% endif %}
     {% if template.author.email == user.email %}
-        <span data-toggle="tooltip" data-placement="top" title="Edit" class="favorites-template"><a href="{% url 'civicconnect:template_update' template.id %}"><i class="fas fa-pencil-alt unliked"></i></a></span>
+        <span data-toggle="tooltip" data-placement="top" title="Edit" class="favorites-template"><a href="{% url 'civicconnect:template_update' template.id %}"><i class="fas fa-pencil-alt edit"></i></a></span>
     {% endif %}
 {% endif %}
 <h3>{{template.title}}</h3>
