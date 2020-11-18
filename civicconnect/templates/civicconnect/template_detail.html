@@ -7,13 +7,16 @@
     {% else %}
         <span data-toggle="tooltip" data-placement="top" title="Add to Liked" class="favorites-template"><a href="{% url 'civicconnect:like' template.id %}"><i class="fas fa-star unliked"></i></a></span>
     {% endif %}
+    {% if template.author.email == user.email %}
+        <span data-toggle="tooltip" data-placement="top" title="Edit" class="favorites-template"><a href="{% url 'civicconnect:template_update' template.id %}"><i class="fas fa-pencil-alt edit"></i></a></span>
+    {% endif %}
 {% endif %}
 <h3>{{template.title}}</h3>
-<strong>Author: </strong>{{template.author.first_name}} {{template.author.last_name}}<br>
+<strong>Author: </strong><a href="{% url 'civicconnect:profile' template.author.email %}">{{template.author.first_name}} {{template.author.last_name}}</a> ({{ template.author.email }})<br>
 <strong>Created: </strong> {{template.pub_date}}<br>
 <strong>Topic: </strong> <a href="{% url 'civicconnect:topic_detail' template.topic.id %}">{{template.topic.title}}</a><br>
 <strong>Affiliation: </strong> {{template.get_affiliation_display}}<br>
 <br>
 <strong>Template Text:</strong><br>
-<textarea style="width:75%;height:500px" disabled>{{template.body}}</textarea>
+<textarea class="form-control" style="width:75%;height:500px" disabled>{{template.body}}</textarea>
 {% endblock %}

@@ -1,22 +1,121 @@
 {% extends 'civicconnect/base.html' %}
 
 {% block content %}
-<h2>Create a Template</h2>
-
+{% if template.title %}<h2>Edit "{{ template.title }}"</h2>{% else %}<h2>Create New Template</h2>{% endif %}
 {% if user.is_authenticated %}
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
     <div class="alert alert-warning" role="alert">
         <strong><u>Notice</u></strong>: All templates <em>must</em> have the following replacement tags in them: <strong>${official}</strong> (the name of the representative), <strong>${me}</strong> (your name).
     </div>
-    <form method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Save">
+    <form id="templateForm" method="post" onsubmit="return validate()">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="selectTopic"><a href="{% url 'civicconnect:topic_index' %}" target="_blank" data-toggle="tooltip" data-placement="top" title="View Topics Index">Topic</a></label>
+            <select id="selectTopic" class="form-control" name="topic" required>
+                {% if template.topic.id %}
+                    <option value="{{ template.topic.id }}" selected >{{ template.topic.title }}</option>
+                {% else %}
+                    <option value="" selected disabled>-Select Topic-</option>
+                {% endif %}
+                {% for topic in topics %}
+                    {% if template.topic.id != topic.id %}
+                        <option value="{{ topic.id }}">{{ topic.title }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="inputTitle">Title</label>
+            <input id="inputTitle" class="form-control" name="title" required value="{{ template.title }}" placeholder="Enter the title or subject line of this email...">
+        </div>
+        <div class="form-group">
+            <label for="inputBody">Email Body</label>
+            <div id="tagCheck" style="display:inline">
+                <span class="badge badge-danger">Missing ${official}</span>
+                <span class="badge badge-danger">Missing ${me}</span>
+            </div>
+            <textarea id="inputBody" class="form-control" name="body" required placeholder="Enter the body of the email..." rows="10">{{ template.body }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="selectAffiliation">Affiliation</label>
+            <select id="selectAffiliation" class="form-control" name="affiliation" required placeholder="Enter the body of the email..." rows="10">
+                {% if template.affiliation %}
+                    <option value="{{ template.affiliation }}" selected >{{ template.get_affiliation_display }}</option>
+                {% else %}
+                    <option value="" selected disabled>-Select Affiliation-</option>
+                {% endif %}
+                {% for a in affiliations %}
+                    {% if a.0 != template.affiliation %}
+                        <option value="{{ a.0 }}">{{ a.1 }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        {% comment %} Date published and Author will be set on the backend to prevent loopholes {% endcomment %}
+        <div class="text-center">
+            <input class="btn btn-primary" type="submit" value="{% if template.id %}Save{% else %}Create{% endif %}">
+            <a class="btn btn-secondary" href="{% url 'civicconnect:template_index' %}">Back to Index</a>
+        </div>
     </form>
+    <div class="modal" tabindex="-1" role="dialog" id="failedBody">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Missing Replacement Tags</h5>
+            </div>
+            <div class="modal-body">
+                <strong>Looks like you're missing some tags!</strong> Ensure you have used the required replacement tags in the Email Body field.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
     <script>
         window.addEventListener('DOMContentLoaded', (event) => {
-            document.getElementById("id_pub_date").value = moment().format('YYYY-MM-DD HH:mm:ss')
+            var me = false, official = false, text = document.getElementById('inputBody');
+            text.addEventListener('keyup', function() {
+                var text_raw = text.value;
+                console.log(text_raw)
+                if (text_raw.includes("${me}")) {
+                    me = true;
+                } else {
+                    me = false;
+                }
+                if (text_raw.includes("${official}")) {
+                    official = true;
+                } else {
+                    official = false;
+                }
+                updateDiv();
+            });
+            function updateDiv() {
+                var html = "";
+                if (official) { 
+                    html += '<span class="badge badge-success"><i class="fas fa-check"></i> ${official}</span> '
+                } else {
+                    html += '<span class="badge badge-danger">Missing ${official}</span> '
+                }
+                if (me) { 
+                    html += '<span class="badge badge-success"><i class="fas fa-check"></i> ${me}</span>'
+                } else {
+                    html += '<span class="badge badge-danger">Missing ${me}</span>'
+                }
+                document.getElementById('tagCheck').innerHTML = html;
+            }
+            document.querySelector("#templateForm").addEventListener("submit", function(e){
+                if(!(me && official)){
+                    e.preventDefault();    //stop form from submitting
+                    $('#failedBody').modal('show')
+                }
+            });
+            {% if template.title %}
+                me = true;
+                official = true;
+                updateDiv();
+            {% endif %}
         });
-        
     </script>
 {% else %}
 <div class="alert alert-danger" role="alert">

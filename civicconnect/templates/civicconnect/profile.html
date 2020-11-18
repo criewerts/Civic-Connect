@@ -4,26 +4,108 @@
 <h2>Profile</h2>
 
 <div class="text-center">
-    <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="profile_image"><br>
-    <strong>{{ user.first_name }} {{ user.last_name }}</strong> <br>
-    <em>{{ user.email }}</em><br>
+    <img src="{{ profile_user.socialaccount_set.all.0.get_avatar_url }}" class="profile_image"><br>
+    <strong>{{ profile_user.first_name }} {{ profile_user.last_name }}</strong> <br>
+    <em>{{ profile_user.email }}</em><br>
+    {% if user.email == profile_user.email %}
+    <br>
+    <form action="{% url 'civicconnect:update_profile' profile_user.email %}" method="post" class="form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="inputAddress">Address</label>
+            <input type="text" name="address1" class="form-control" id="inputAddress" placeholder="Enter your address here..." value="{{profile_user.address1}}">
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+            <label for="inputCity">City</label>
+            <input type="text" class="form-control" name="city" id="inputCity" placeholder="Enter your city here..." value="{{profile_user.city}}">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputState">State</label>
+                <select id="inputState" class="form-control" name="state_cd" required>
+                    {% if profile_user.state_cd %}
+                        <option value="{{profile_user.state_cd}}" selected>{{profile_user.state_cd}}</option>
+                    {% else %}
+                        <option value="" selected disabled>-Select a State-</option>
+                    {% endif %}
+                    <option value="AL">Alabama</option>
+                    <option value="AK">Alaska</option>
+                    <option value="AZ">Arizona</option>
+                    <option value="AR">Arkansas</option>
+                    <option value="CA">California</option>
+                    <option value="CO">Colorado</option>
+                    <option value="CT">Connecticut</option>
+                    <option value="DE">Delaware</option>
+                    <option value="DC">District Of Columbia</option>
+                    <option value="FL">Florida</option>
+                    <option value="GA">Georgia</option>
+                    <option value="HI">Hawaii</option>
+                    <option value="ID">Idaho</option>
+                    <option value="IL">Illinois</option>
+                    <option value="IN">Indiana</option>
+                    <option value="IA">Iowa</option>
+                    <option value="KS">Kansas</option>
+                    <option value="KY">Kentucky</option>
+                    <option value="LA">Louisiana</option>
+                    <option value="ME">Maine</option>
+                    <option value="MD">Maryland</option>
+                    <option value="MA">Massachusetts</option>
+                    <option value="MI">Michigan</option>
+                    <option value="MN">Minnesota</option>
+                    <option value="MS">Mississippi</option>
+                    <option value="MO">Missouri</option>
+                    <option value="MT">Montana</option>
+                    <option value="NE">Nebraska</option>
+                    <option value="NV">Nevada</option>
+                    <option value="NH">New Hampshire</option>
+                    <option value="NJ">New Jersey</option>
+                    <option value="NM">New Mexico</option>
+                    <option value="NY">New York</option>
+                    <option value="NC">North Carolina</option>
+                    <option value="ND">North Dakota</option>
+                    <option value="OH">Ohio</option>
+                    <option value="OK">Oklahoma</option>
+                    <option value="OR">Oregon</option>
+                    <option value="PA">Pennsylvania</option>
+                    <option value="RI">Rhode Island</option>
+                    <option value="SC">South Carolina</option>
+                    <option value="SD">South Dakota</option>
+                    <option value="TN">Tennessee</option>
+                    <option value="TX">Texas</option>
+                    <option value="UT">Utah</option>
+                    <option value="VT">Vermont</option>
+                    <option value="VA">Virginia</option>
+                    <option value="WA">Washington</option>
+                    <option value="WV">West Virginia</option>
+                    <option value="WI">Wisconsin</option>
+                    <option value="WY">Wyoming</option>
+                </select>
+            </div>
+            <div class="form-group col-md-2">
+            <label for="inputZip">Zip</label>
+            <input type="text" class="form-control" id="inputZip" name="zip_code" placeholder="Enter Zip here..." value="{{profile_user.zip_code}}">
+            </div>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Update Profile Information">
+    </form>
+    {% endif %}
     <hr>
     <h2>Liked Templates</h2>
-    {% if user.favorites.all %}
-        {% for favorite in user.favorites.all %}
+    {% if profile_user.favorites.all %}
+        {% for favorite in profile_user.favorites.all %}
             <a href="{% url 'civicconnect:template_detail' favorite.id %}">{{ favorite.title }}</a> by {{favorite.author.first_name}} {{favorite.author.last_name}} in {{favorite.topic.title }}<br>
         {% endfor %}
     {% else %}
-        <em>You do not have any liked templates.</em>
+        <em>No liked templates.</em>
     {% endif %}
     <hr>
     <h2>Liked Topics</h2>
-    {% if user.favorites_topic.all %}
-        {% for favorite in user.favorites_topic.all %}
+    {% if profile_user.favorites_topic.all %}
+        {% for favorite in profile_user.favorites_topic.all %}
             <a href="{% url 'civicconnect:topic_detail' favorite.id %}">{{ favorite.title }}</a> by {{favorite.author.first_name}} {{favorite.author.last_name}}<br>
         {% endfor %}
     {% else %}
-        <em>You do not have any liked topics.</em>
+        <em>No liked topics.</em>
     {% endif %}
 </div>
 <h3 >

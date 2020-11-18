@@ -53,11 +53,14 @@ textarea {
     padding-right: 10px;
     padding-top: 10px;
 }
-.unliked, .remove:hover {
+.unliked, .remove:hover, .edit {
     color: #bfbfbf;
 }
 .unliked:hover {
     color: gold;
+}
+.edit:hover {
+    color: #577a9c;
 }
 .alert-fix {
     top: -3px!important;
