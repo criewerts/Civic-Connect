@@ -26,6 +26,8 @@ SECRET_KEY = 'b^6w%1&#++s*5(u%5yrbp96!ddvt75_2@f$m_z98&_o062x&fp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+SECURE_SSL_REDIRECT = True
+
 ALLOWED_HOSTS = []
 
 
