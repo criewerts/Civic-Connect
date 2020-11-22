@@ -13,4 +13,27 @@ Welcome to Civic Connect! We are making it easier to put your passions into acti
     <li>Head over to your profile and enter your contact information. This will be useful for looking up your representatives.</li>
     <li>Visit the Representatives tab to get in touch with your local officials.</li>
 </ol>
+<div class="modal" tabindex="-1" role="dialog" id="welcome">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Welcome!</h5>
+            </div>
+            <div class="modal-body">
+                <strong>Greetings!</strong> If you're viewing this page at this point, you are most likely a TA or one of our professors! As requested, we've put together a comprehensive list of features / user guide for you to use to more easily evaluate our project. This is located in our README.md file.
+                <hr>
+                Please click below to open the user guide. Thank you!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="https://github.com/uva-cs3240-f20/civic14/blob/master/README.md" target="_blank" class="btn btn-primary">View User Guide</a>
+            </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+    window.addEventListener('DOMContentLoaded', (event) => {
+        $('#welcome').modal('show')
+    });
+</script>
 {% endblock %}
