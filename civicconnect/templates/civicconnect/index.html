@@ -13,6 +13,7 @@ Welcome to Civic Connect! We are making it easier to put your passions into acti
     <li>Head over to your profile and enter your contact information. This will be useful for looking up your representatives.</li>
     <li>Visit the Representatives tab to get in touch with your local officials.</li>
 </ol>
+{% if user.is_authenticated is not True %}
 <div class="modal" tabindex="-1" role="dialog" id="welcome">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -36,4 +37,5 @@ Welcome to Civic Connect! We are making it easier to put your passions into acti
         $('#welcome').modal('show')
     });
 </script>
+{% endif %}
 {% endblock %}
